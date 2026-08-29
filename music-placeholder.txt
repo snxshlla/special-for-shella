@@ -1,0 +1,11 @@
+# MUSIC PLACEHOLDER
+# Ganti file ini dengan musik Anda sendiri
+# Nama file harus persis: music.mp3
+# Format: MP3, WAV, atau format audio lain yang didukung browser
+# Ukuran: Sebaiknya di bawah 5MB untuk loading cepat
+# 
+# Cara mengganti:
+# 1. Buat atau download file musik Anda
+# 2. Ubah nama menjadi: music.mp3
+# 3. Ganti file ini di folder utama project
+# 4. Musik akan otomatis diputar saat website dibuka
