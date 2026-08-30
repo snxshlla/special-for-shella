@@ -53,7 +53,7 @@ const QUIZ_QUESTIONS = [
     {
         question: 'Menurut aku kamu itu...',
         options: ['biasa aja', 'lumayan', 'special', 'terlalu special'],
-        correctAnswer: 2
+        correctAnswer: 3
     }
 ];
 
