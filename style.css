@@ -5,14 +5,29 @@
 }
 
 :root {
-    --primary-pink: #FFB6D9;
-    --soft-pink: #FFC0E0;
-    --dark-pink: #FF99C8;
-    --white: #FFFFFF;
+    /* Primary Colors - Warm Soft Pink Palette */
+    --blush-pink: #F5E6E8;
+    --soft-pink: #F0D9E3;
+    --primary-pink: #E8C5D8;
+    --dusty-rose: #D4A9C0;
+    --muted-rose: #C999B3;
+    
+    /* Accent Colors */
+    --dark-pink: #B8738F;
+    --burgundy: #8B5A6F;
+    --warm-beige: #F5EDE5;
+    --cream: #FFFBF8;
+    
+    /* Neutral */
     --text-dark: #5A5A5A;
     --text-light: #8B8B8B;
-    --shadow: 0 8px 32px rgba(255, 182, 217, 0.2);
-    --shadow-soft: 0 4px 16px rgba(255, 182, 217, 0.15);
+    --white: #FFFFFF;
+    
+    /* Shadows */
+    --shadow-sm: 0 2px 8px rgba(184, 115, 143, 0.1);
+    --shadow: 0 8px 32px rgba(184, 115, 143, 0.15);
+    --shadow-lg: 0 12px 48px rgba(184, 115, 143, 0.2);
+    --shadow-inner: inset 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 html {
@@ -21,10 +36,25 @@ html {
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #FFF5FB 0%, #FFEBF0 100%);
+    background: linear-gradient(135deg, #FFF9F7 0%, #F5EDE5 50%, #F0D9E3 100%);
     color: var(--text-dark);
     overflow-x: hidden;
     min-height: 100vh;
+    position: relative;
+}
+
+/* Subtle noise/texture overlay */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" /></filter><rect width="100" height="100" fill="rgba(255,255,255,0.015)" filter="url(%23noise)"/></svg>');
+    pointer-events: none;
+    z-index: 1;
 }
 
 /* ============================================
@@ -37,13 +67,14 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, #FFB6D9 0%, #FFC0E0 100%);
+    background: linear-gradient(135deg, #E8C5D8 0%, #D4A9C0 50%, #F0D9E3 100%);
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 9999;
     opacity: 1;
     transition: opacity 0.8s ease-out;
+    overflow: hidden;
 }
 
 .opening-screen.fade-out {
@@ -54,6 +85,8 @@ body {
 .opening-content {
     text-align: center;
     animation: fadeInUp 1s ease-out;
+    position: relative;
+    z-index: 10;
 }
 
 .opening-title {
@@ -76,7 +109,7 @@ body {
 .opening-button {
     padding: 1rem 3rem;
     font-size: 1.1rem;
-    background: var(--white);
+    background: var(--cream);
     color: var(--dark-pink);
     border: none;
     border-radius: 50px;
@@ -90,6 +123,7 @@ body {
 .opening-button:hover {
     transform: translateY(-3px);
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+    background: var(--white);
 }
 
 .opening-button:active {
@@ -119,6 +153,8 @@ body {
 .main-content {
     opacity: 0;
     transition: opacity 0.8s ease-out 0.3s;
+    position: relative;
+    z-index: 2;
 }
 
 .main-content.fade-in {
@@ -139,6 +175,7 @@ body {
     padding: 4rem 0;
     opacity: 0;
     animation: fadeInSection 0.8s ease-out forwards;
+    position: relative;
 }
 
 .section:nth-child(1) { animation-delay: 0.5s; }
@@ -166,6 +203,7 @@ body {
     font-weight: 700;
     position: relative;
     padding-bottom: 1rem;
+    letter-spacing: -0.5px;
 }
 
 .section-title::after {
@@ -174,10 +212,24 @@ body {
     bottom: 0;
     left: 50%;
     transform: translateX(-50%);
-    width: 60px;
-    height: 3px;
-    background: linear-gradient(90deg, var(--primary-pink), var(--dark-pink));
+    width: 80px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--primary-pink) 0%, var(--dark-pink) 50%, var(--primary-pink) 100%);
     border-radius: 2px;
+}
+
+/* Decorative elements for sections */
+.section::before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: 10%;
+    width: 60px;
+    height: 60px;
+    background: radial-gradient(circle, var(--dusty-rose), transparent 70%);
+    border-radius: 50%;
+    opacity: 0.1;
+    pointer-events: none;
 }
 
 @media (max-width: 768px) {
@@ -189,25 +241,44 @@ body {
         font-size: 1.8rem;
         margin-bottom: 1.8rem;
     }
+
+    .section::before {
+        width: 40px;
+        height: 40px;
+    }
 }
 
 /* ============================================
-   FOR YOU SECTION
+   FOR YOU SECTION (LETTER)
    ============================================ */
 
 .for-you-section {
-    background: var(--white);
-    margin: 2rem 0;
-    border-radius: 30px;
+    background: linear-gradient(135deg, var(--cream) 0%, var(--warm-beige) 100%);
+    margin: 2rem auto;
+    border-radius: 20px;
     box-shadow: var(--shadow);
     overflow: hidden;
+    max-width: 750px;
+    border: 1px solid rgba(232, 197, 216, 0.3);
+    position: relative;
+}
+
+.for-you-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--primary-pink), transparent);
 }
 
 .message-card {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 240, 245, 0.6) 100%);
+    background: linear-gradient(135deg, rgba(255, 251, 248, 0.9) 0%, rgba(245, 237, 229, 0.7) 100%);
     padding: 3rem;
-    border-radius: 20px;
-    border: 2px solid rgba(255, 182, 217, 0.3);
+    border-radius: 15px;
+    border: 1px solid rgba(212, 169, 192, 0.2);
+    box-shadow: var(--shadow-inner);
 }
 
 .message-text {
@@ -230,8 +301,8 @@ body {
 
 @media (max-width: 768px) {
     .for-you-section {
-        margin: 1rem 0;
-        border-radius: 20px;
+        margin: 1rem auto;
+        border-radius: 15px;
     }
 
     .message-card {
@@ -247,44 +318,86 @@ body {
 }
 
 /* ============================================
-   GALLERY SECTION
+   GALLERY SECTION (SCRAPBOOK)
    ============================================ */
 
 .gallery-section {
-    background: var(--white);
-    margin: 2rem 0;
-    border-radius: 30px;
+    background: linear-gradient(135deg, var(--cream) 0%, var(--warm-beige) 100%);
+    margin: 2rem auto;
+    border-radius: 20px;
     box-shadow: var(--shadow);
     overflow: hidden;
+    max-width: 950px;
+    border: 1px solid rgba(232, 197, 216, 0.3);
+}
+
+.gallery-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--primary-pink), transparent);
 }
 
 .gallery-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 2rem;
-    padding: 2rem;
+    padding: 2.5rem;
 }
 
 .gallery-item {
     background: var(--white);
-    border-radius: 15px;
+    border-radius: 12px;
     overflow: hidden;
-    box-shadow: var(--shadow-soft);
+    box-shadow: var(--shadow);
     transition: all 0.3s ease;
-    transform: perspective(1000px) rotateY(0deg);
     cursor: pointer;
+    transform: rotate(-1deg);
+    position: relative;
+    border: 1px solid rgba(232, 197, 216, 0.2);
+}
+
+.gallery-item:nth-child(even) {
+    transform: rotate(1deg);
+}
+
+.gallery-item:nth-child(3n) {
+    transform: rotate(-0.5deg);
 }
 
 .gallery-item:hover {
-    transform: translateY(-8px) perspective(1000px) rotateY(3deg);
-    box-shadow: var(--shadow);
+    transform: translateY(-8px) rotate(0deg) scale(1.02);
+    box-shadow: var(--shadow-lg);
+}
+
+/* Tape effect */
+.gallery-item::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    left: 30%;
+    width: 60px;
+    height: 16px;
+    background: linear-gradient(90deg, rgba(255, 240, 245, 0.6), rgba(255, 255, 255, 0.8), rgba(255, 240, 245, 0.6));
+    border-radius: 2px;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+    z-index: 5;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.gallery-item:hover::before {
+    opacity: 1;
 }
 
 .gallery-image-wrapper {
     width: 100%;
     aspect-ratio: 3/4;
     background: linear-gradient(135deg, var(--soft-pink), var(--primary-pink));
-    border-radius: 12px;
+    border-radius: 8px;
     overflow: hidden;
     margin-bottom: 1rem;
     display: flex;
@@ -316,18 +429,25 @@ body {
     padding: 0 1rem 1rem;
     line-height: 1.5;
     font-style: italic;
+    font-weight: 500;
 }
 
 @media (max-width: 768px) {
     .gallery-container {
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
         gap: 1rem;
-        padding: 1rem;
+        padding: 1.5rem;
     }
 
     .gallery-caption {
         font-size: 0.85rem;
         padding: 0 0.8rem 0.8rem;
+    }
+
+    .gallery-item::before {
+        top: -6px;
+        width: 50px;
+        height: 14px;
     }
 }
 
@@ -336,29 +456,43 @@ body {
    ============================================ */
 
 .quiz-section {
-    background: var(--white);
-    margin: 2rem 0;
-    border-radius: 30px;
+    background: linear-gradient(135deg, var(--cream) 0%, var(--warm-beige) 100%);
+    margin: 2rem auto;
+    border-radius: 20px;
     box-shadow: var(--shadow);
     overflow: hidden;
+    max-width: 750px;
+    border: 1px solid rgba(232, 197, 216, 0.3);
+}
+
+.quiz-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--primary-pink), transparent);
 }
 
 .quiz-container {
-    padding: 2rem;
+    padding: 2.5rem;
 }
 
 .quiz-item {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(255, 240, 245, 0.4) 100%);
+    background: linear-gradient(135deg, var(--white) 0%, rgba(245, 237, 229, 0.3) 100%);
     padding: 1.5rem;
     margin-bottom: 1.5rem;
-    border-radius: 15px;
-    border: 2px solid rgba(255, 182, 217, 0.2);
+    border-radius: 12px;
+    border: 2px solid rgba(232, 197, 216, 0.2);
     transition: all 0.3s ease;
+    box-shadow: var(--shadow-sm);
 }
 
 .quiz-item:hover {
-    border-color: rgba(255, 182, 217, 0.5);
-    box-shadow: var(--shadow-soft);
+    border-color: rgba(212, 169, 192, 0.4);
+    box-shadow: var(--shadow);
+    transform: translateX(4px);
 }
 
 .quiz-question {
@@ -377,7 +511,7 @@ body {
 .quiz-option {
     padding: 0.8rem 1rem;
     background: var(--white);
-    border: 2px solid rgba(255, 182, 217, 0.3);
+    border: 2px solid rgba(212, 169, 192, 0.3);
     border-radius: 10px;
     cursor: pointer;
     font-size: 1rem;
@@ -396,14 +530,15 @@ body {
 }
 
 .quiz-option:hover {
-    background: rgba(255, 182, 217, 0.1);
+    background: rgba(232, 197, 216, 0.15);
     border-color: var(--primary-pink);
+    transform: translateX(4px);
 }
 
 .quiz-submit {
     width: 100%;
     padding: 1rem;
-    background: linear-gradient(135deg, var(--primary-pink), var(--dark-pink));
+    background: linear-gradient(135deg, var(--primary-pink), var(--dusty-rose));
     color: var(--white);
     border: none;
     border-radius: 12px;
@@ -412,20 +547,22 @@ body {
     cursor: pointer;
     transition: all 0.3s ease;
     margin-top: 1rem;
+    box-shadow: var(--shadow);
 }
 
 .quiz-submit:hover {
     transform: translateY(-3px);
-    box-shadow: var(--shadow);
+    box-shadow: var(--shadow-lg);
 }
 
 .quiz-result {
-    background: linear-gradient(135deg, var(--soft-pink), rgba(255, 182, 217, 0.2));
+    background: linear-gradient(135deg, var(--soft-pink), rgba(232, 197, 216, 0.3));
     padding: 2rem;
-    border-radius: 15px;
+    border-radius: 12px;
     text-align: center;
     margin-top: 2rem;
     border: 2px solid var(--primary-pink);
+    box-shadow: var(--shadow);
 }
 
 .quiz-result-score {
@@ -463,11 +600,23 @@ body {
    ============================================ */
 
 .game-section {
-    background: var(--white);
-    margin: 2rem 0;
-    border-radius: 30px;
+    background: linear-gradient(135deg, var(--cream) 0%, var(--warm-beige) 100%);
+    margin: 2rem auto;
+    border-radius: 20px;
     box-shadow: var(--shadow);
     overflow: hidden;
+    max-width: 750px;
+    border: 1px solid rgba(232, 197, 216, 0.3);
+}
+
+.game-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--primary-pink), transparent);
 }
 
 .game-instruction {
@@ -476,6 +625,7 @@ body {
     color: var(--text-light);
     margin-bottom: 2rem;
     font-style: italic;
+    padding: 2rem 2rem 0;
 }
 
 .game-container {
@@ -492,14 +642,14 @@ body {
 
 .game-timer,
 .game-score {
-    background: linear-gradient(135deg, var(--soft-pink), var(--primary-pink));
+    background: linear-gradient(135deg, var(--primary-pink), var(--dusty-rose));
     padding: 1rem 1.5rem;
     border-radius: 12px;
     color: var(--white);
     font-size: 1.1rem;
     font-weight: 600;
     text-align: center;
-    box-shadow: var(--shadow-soft);
+    box-shadow: var(--shadow);
     min-width: 120px;
 }
 
@@ -515,11 +665,12 @@ body {
     position: relative;
     width: 100%;
     height: 400px;
-    background: linear-gradient(135deg, rgba(255, 240, 245, 0.6), rgba(255, 225, 240, 0.4));
-    border-radius: 20px;
-    border: 2px dashed rgba(255, 182, 217, 0.4);
+    background: linear-gradient(135deg, rgba(245, 237, 229, 0.8), rgba(232, 197, 216, 0.5));
+    border-radius: 15px;
+    border: 2px dashed rgba(212, 169, 192, 0.4);
     margin-bottom: 2rem;
     cursor: crosshair;
+    box-shadow: var(--shadow-inner);
 }
 
 .game-heart {
@@ -528,6 +679,12 @@ body {
     cursor: pointer;
     user-select: none;
     animation: heartPulse 0.3s ease;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+    transition: filter 0.2s ease;
+}
+
+.game-heart:hover {
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
 }
 
 @keyframes heartPulse {
@@ -561,7 +718,7 @@ body {
 .game-start-btn {
     width: 100%;
     padding: 1rem;
-    background: linear-gradient(135deg, var(--primary-pink), var(--dark-pink));
+    background: linear-gradient(135deg, var(--primary-pink), var(--dusty-rose));
     color: var(--white);
     border: none;
     border-radius: 12px;
@@ -570,11 +727,12 @@ body {
     cursor: pointer;
     transition: all 0.3s ease;
     margin-bottom: 1rem;
+    box-shadow: var(--shadow);
 }
 
 .game-start-btn:hover:not(:disabled) {
     transform: translateY(-3px);
-    box-shadow: var(--shadow);
+    box-shadow: var(--shadow-lg);
 }
 
 .game-start-btn:disabled {
@@ -583,9 +741,9 @@ body {
 }
 
 .game-result {
-    background: linear-gradient(135deg, var(--soft-pink), rgba(255, 182, 217, 0.2));
+    background: linear-gradient(135deg, var(--soft-pink), rgba(232, 197, 216, 0.3));
     padding: 1.5rem;
-    border-radius: 15px;
+    border-radius: 12px;
     text-align: center;
     border: 2px solid var(--primary-pink);
     min-height: 80px;
@@ -595,6 +753,7 @@ body {
     font-size: 1.1rem;
     color: var(--text-dark);
     line-height: 1.6;
+    box-shadow: var(--shadow);
 }
 
 @media (max-width: 768px) {
@@ -618,28 +777,40 @@ body {
 }
 
 /* ============================================
-   OPEN WHEN SECTION
+   OPEN WHEN SECTION (ENVELOPES)
    ============================================ */
 
 .open-when-section {
-    background: var(--white);
-    margin: 2rem 0;
-    border-radius: 30px;
+    background: linear-gradient(135deg, var(--cream) 0%, var(--warm-beige) 100%);
+    margin: 2rem auto;
+    border-radius: 20px;
     box-shadow: var(--shadow);
     overflow: hidden;
+    max-width: 800px;
+    border: 1px solid rgba(232, 197, 216, 0.3);
+}
+
+.open-when-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--primary-pink), transparent);
 }
 
 .open-when-buttons {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 1rem;
+    gap: 1.5rem;
     margin-bottom: 2rem;
-    padding: 2rem;
+    padding: 2.5rem;
 }
 
 .open-when-btn {
-    padding: 1rem;
-    background: linear-gradient(135deg, var(--primary-pink), var(--soft-pink));
+    padding: 1.2rem;
+    background: linear-gradient(135deg, var(--primary-pink), var(--dusty-rose));
     color: var(--white);
     border: none;
     border-radius: 12px;
@@ -647,13 +818,27 @@ body {
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: var(--shadow-soft);
+    box-shadow: var(--shadow);
     text-transform: capitalize;
+    position: relative;
+    overflow: hidden;
+}
+
+.open-when-btn::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    right: 5%;
+    width: 30px;
+    height: 30px;
+    background: var(--muted-rose);
+    border-radius: 50%;
+    opacity: 0.3;
 }
 
 .open-when-btn:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow);
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: var(--shadow-lg);
 }
 
 .open-when-btn:active {
@@ -661,7 +846,7 @@ body {
 }
 
 .open-when-message {
-    padding: 0 2rem 2rem;
+    padding: 0 2.5rem 2.5rem;
     min-height: 150px;
     display: flex;
     align-items: center;
@@ -669,15 +854,16 @@ body {
 }
 
 .message-box {
-    background: linear-gradient(135deg, rgba(255, 240, 245, 0.8), rgba(255, 225, 240, 0.6));
+    background: linear-gradient(135deg, rgba(255, 251, 248, 0.95), rgba(245, 237, 229, 0.8));
     padding: 2rem;
-    border-radius: 15px;
+    border-radius: 12px;
     border: 2px solid var(--primary-pink);
     text-align: center;
     animation: messagePopIn 0.4s ease;
     font-size: 1.1rem;
     color: var(--text-dark);
     line-height: 1.8;
+    box-shadow: var(--shadow);
 }
 
 @keyframes messagePopIn {
@@ -694,12 +880,12 @@ body {
 @media (max-width: 768px) {
     .open-when-buttons {
         grid-template-columns: repeat(2, 1fr);
-        gap: 0.8rem;
+        gap: 1rem;
         padding: 1.5rem;
     }
 
     .open-when-btn {
-        padding: 0.8rem;
+        padding: 1rem;
         font-size: 0.9rem;
     }
 
@@ -726,11 +912,12 @@ body {
     display: flex;
     align-items: center;
     gap: 10px;
-    background: linear-gradient(135deg, var(--primary-pink), var(--dark-pink));
+    background: linear-gradient(135deg, var(--primary-pink), var(--dusty-rose));
     padding: 0.8rem 1.2rem;
     border-radius: 50px;
-    box-shadow: var(--shadow);
+    box-shadow: var(--shadow-lg);
     animation: slideIn 0.5s ease;
+    border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 @keyframes slideIn {
@@ -797,17 +984,18 @@ body {
     right: 30px;
     width: 50px;
     height: 50px;
-    background: linear-gradient(135deg, var(--primary-pink), var(--dark-pink));
+    background: linear-gradient(135deg, var(--primary-pink), var(--dusty-rose));
     color: var(--white);
     border: none;
     border-radius: 50%;
     font-size: 1.5rem;
     cursor: pointer;
-    box-shadow: var(--shadow);
+    box-shadow: var(--shadow-lg);
     transition: all 0.3s ease;
     opacity: 0;
     pointer-events: none;
     z-index: 998;
+    border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .back-to-top.show {
@@ -817,7 +1005,7 @@ body {
 
 .back-to-top:hover {
     transform: translateY(-5px);
-    box-shadow: var(--shadow);
+    box-shadow: var(--shadow-lg);
 }
 
 @media (max-width: 768px) {
@@ -848,18 +1036,19 @@ body {
 .floating-heart {
     position: absolute;
     font-size: 1.5rem;
-    opacity: 0.6;
+    opacity: 0.4;
     animation: float 6s ease-in infinite;
     pointer-events: none;
+    filter: drop-shadow(0 2px 4px rgba(184, 115, 143, 0.2));
 }
 
 @keyframes float {
     0% {
         transform: translateY(0) translateX(0) rotate(0deg);
-        opacity: 0.6;
+        opacity: 0.4;
     }
     50% {
-        opacity: 0.4;
+        opacity: 0.2;
     }
     100% {
         transform: translateY(-100vh) translateX(100px) rotate(360deg);
@@ -876,8 +1065,9 @@ body {
     padding: 3rem 1.5rem;
     color: var(--text-light);
     font-size: 0.95rem;
-    border-top: 2px solid rgba(255, 182, 217, 0.2);
+    border-top: 2px solid rgba(232, 197, 216, 0.3);
     margin-top: 3rem;
+    background: linear-gradient(135deg, rgba(255, 251, 248, 0.5), rgba(245, 237, 229, 0.5));
 }
 
 .footer p {
@@ -890,6 +1080,33 @@ body {
         padding: 2rem 1.5rem;
         font-size: 0.9rem;
     }
+}
+
+/* ============================================
+   DECORATIVE UTILITY CLASSES
+   ============================================ */
+
+/* Paper texture for future use */
+.paper-texture {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><filter id="paper"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" result="noise"/></filter><rect width="100" height="100" fill="white" filter="url(%23paper)"/></svg>');
+}
+
+/* Tape effect utility */
+.tape-top {
+    position: relative;
+}
+
+.tape-top::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    left: 30%;
+    width: 60px;
+    height: 16px;
+    background: linear-gradient(90deg, rgba(255, 240, 245, 0.7), rgba(255, 255, 255, 0.9), rgba(255, 240, 245, 0.7));
+    border-radius: 2px;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+    transform: rotate(-2deg);
 }
 
 /* ============================================
